@@ -26,27 +26,25 @@ before_script:
   - wget https://github.com/greatscottgadgets/libbtbb/archive/master.zip -O /tmp/libbtbb-master.zip
   - unzip libbtbb-master.zip
   - mkdir libbtbb-master/build
-  - pushd libbtbb-master/build
+  - cd libbtbb-master/build
   - cmake -DCMAKE_INSTALL_PREFIX:PATH=/tmp/libbtbb-install ..
   - make
   - make install
   - popd
-  - popd
   - export CFLAGS="-g -Wall -Wextra -Werror -Wno-zero-length-array"
 
 before_install:
-  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew update; fi
-  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew install libusb; fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew tap PX4/homebrew-px4; brew update; fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew install libusb gcc-arm-none-eabi; fi
 
 script:
   - mkdir host/build
-  - pushd host/build
+  - cd host/build
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then DYLIB_SUFFIX=dylib; else DYLIB_SUFFIX=so; fi
   - cmake -DLIBBTBB_INCLUDE_DIR=/tmp/libbtbb-install/include -DLIBBTBB_LIBRARIES=/tmp/libbtbb-install/lib/libbtbb.$DYLIB_SUFFIX ..
   - make
-  - popd
-  - pushd firmware
-  - DFU_TOOL="../../host/build/ubertooth-tools/src/ubertooth-dfu" make
+  - cd ../../firmware/bluetooth_rxtx
+  - DFU_TOOL="../../../host/build/ubertooth-tools/src/ubertooth-dfu" make
 
 addons:
   apt:
