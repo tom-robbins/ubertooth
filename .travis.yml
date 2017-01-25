@@ -44,7 +44,9 @@ script:
   - cmake -DLIBBTBB_INCLUDE_DIR=/tmp/libbtbb-install/include -DLIBBTBB_LIBRARIES=/tmp/libbtbb-install/lib/libbtbb.$DYLIB_SUFFIX ..
   - make
   - cd ../../firmware/bluetooth_rxtx
-  - DFU_TOOL="../../host/build/ubertooth-tools/src/ubertooth-dfu" make
+  - export DFU_TOOL="../../host/build/ubertooth-tools/src/ubertooth-dfu"
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then install_name_tool -add_rpath ../../host/build/libubertooth/src/ $DFU_TOOL; fi
+  - make
 
 addons:
   apt:
