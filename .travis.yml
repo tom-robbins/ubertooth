@@ -46,6 +46,7 @@ script:
   - cd ../../firmware/bluetooth_rxtx
   - export DFU_TOOL="../../host/build/ubertooth-tools/src/ubertooth-dfu"
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then install_name_tool -add_rpath ../../host/build/libubertooth/src/ $DFU_TOOL; fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then install_name_tool -add_rpath /tmp/libbtbb-install/lib/ $DFU_TOOL; fi
   - make
 
 addons:
