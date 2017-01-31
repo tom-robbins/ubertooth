@@ -22,12 +22,12 @@ matrix:
 
 before_script:
   - pushd /tmp
-  - mkdir libbtbb-install
+  - mkdir lib-install
   - wget https://github.com/greatscottgadgets/libbtbb/archive/master.zip -O /tmp/libbtbb-master.zip
   - unzip libbtbb-master.zip
   - mkdir libbtbb-master/build
   - cd libbtbb-master/build
-  - cmake -DCMAKE_INSTALL_PREFIX:PATH=/tmp/libbtbb-install ..
+  - cmake -DCMAKE_INSTALL_PREFIX:PATH=/tmp/lib-install ..
   - make
   - make install
   - popd
@@ -41,12 +41,12 @@ script:
   - mkdir host/build
   - cd host/build
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then DYLIB_SUFFIX=dylib; else DYLIB_SUFFIX=so; fi
-  - cmake -DLIBBTBB_INCLUDE_DIR=/tmp/libbtbb-install/include -DLIBBTBB_LIBRARIES=/tmp/libbtbb-install/lib/libbtbb.$DYLIB_SUFFIX ..
+  - cmake -DLIBBTBB_INCLUDE_DIR=/tmp/lib-install/include -DLIBBTBB_LIBRARIES=/tmp/lib-install/lib/libbtbb.$DYLIB_SUFFIX -DCMAKE_INSTALL_PREFIX:PATH=/tmp/lib-install ..
   - make
+  - make install
   - cd ../../firmware/bluetooth_rxtx
   - export DFU_TOOL="../../host/build/ubertooth-tools/src/ubertooth-dfu"
-  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then install_name_tool -add_rpath ../../host/build/libubertooth/src/ $DFU_TOOL; fi
-  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then install_name_tool -add_rpath /tmp/libbtbb-install/lib/ $DFU_TOOL; fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then install_name_tool -add_rpath /tmp/lib-install/lib/ $DFU_TOOL; fi
   - make
 
 addons:
