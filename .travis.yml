@@ -41,7 +41,7 @@ script:
   - mkdir host/build
   - cd host/build
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then DYLIB_SUFFIX=dylib; else DYLIB_SUFFIX=so; fi
-  - cmake -DLIBBTBB_INCLUDE_DIR=/tmp/lib-install/include -DLIBBTBB_LIBRARIES=/tmp/lib-install/lib/libbtbb.$DYLIB_SUFFIX -DCMAKE_INSTALL_PREFIX:PATH=/tmp/lib-install ..
+  - cmake -DLIBBTBB_INCLUDE_DIR=/tmp/lib-install/include -DLIBBTBB_LIBRARIES=/tmp/lib-install/lib/libbtbb.$DYLIB_SUFFIX -DCMAKE_INSTALL_PREFIX:PATH=/tmp/lib-install -DINSTALL_UDEV_RULES=OFF ..
   - make
   - make install
   - cd ../../firmware/bluetooth_rxtx
