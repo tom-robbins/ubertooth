@@ -412,7 +412,7 @@ void cb_btle(ubertooth_t* ut, void* args)
 	// printf("systime=%u freq=%d addr=%08x delta_t=%.03f ms rssi=%d\n",
 	//        systime, rx->channel + 2402, lell_get_access_address(pkt),
 	//        ts_diff / 10000.0, rx->rssi_min - 54);
-	printf("{\"systime\": %u, \"freq\": %d, \"dest\": %08x, \"rssi\": %d, ",
+	printf("{\"systime\": %u, \"freq\": %d, \"dest\": \"%08x\", \"rssi\": %d, ",
 	       systime, rx->channel + 2402, lell_get_access_address(pkt),
 	       rx->rssi_min - 54);
 
