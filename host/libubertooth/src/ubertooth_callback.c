@@ -409,19 +409,24 @@ void cb_btle(ubertooth_t* ut, void* args)
 		rx_ts += 3276800000;
 	u32 ts_diff = rx_ts - prev_ts;
 	prev_ts = rx->clk100ns;
-	printf("systime=%u freq=%d addr=%08x delta_t=%.03f ms rssi=%d\n",
+	// printf("systime=%u freq=%d addr=%08x delta_t=%.03f ms rssi=%d\n",
+	//        systime, rx->channel + 2402, lell_get_access_address(pkt),
+	//        ts_diff / 10000.0, rx->rssi_min - 54);
+	printf("{\"systime\": %u, \"freq\": %d, \"dest\": %08x, \"rssi\": %d, ",
 	       systime, rx->channel + 2402, lell_get_access_address(pkt),
-	       ts_diff / 10000.0, rx->rssi_min - 54);
+	       rx->rssi_min - 54);
 
 	int len = (rx->data[5] & 0x3f) + 6 + 3;
 	if (len > 50) len = 50;
 
-	for (i = 4; i < len; ++i)
-		printf("%02x ", rx->data[i]);
-	printf("\n");
+	// i think this is printing the raw packet
+	// for (i = 4; i < len; ++i)
+	// 	printf("%02x ", rx->data[i]);
+	// printf("\n");
 
+	printf("\"packet\": {");
 	lell_print(pkt);
-	printf("\n");
+	printf("}\n");
 
 	lell_packet_unref(pkt);
 
